@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Login response (as implemented)",
+  "type": "object",
+  "required": ["user", "accessToken"],
+  "properties": {
+    "accessToken": { "type": "string", "minLength": 1 },
+    "user": {
+      "type": "object",
+      "required": ["id", "email"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "email": { "type": "string", "minLength": 1 },
+        "name": { "type": ["string", "null"] },
+        "surname": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

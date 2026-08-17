@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Player as returned by create and deleteOne (as implemented)",
+  "description": "This shape uses _id and also echoes the password fields back, unlike the getOne/getAll shape.",
+  "type": "object",
+  "required": ["_id", "currency_code", "email", "name", "surname", "username"],
+  "properties": {
+    "_id": { "type": "string", "minLength": 1 },
+    "currency_code": { "type": "string", "minLength": 1 },
+    "email": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "surname": { "type": "string", "minLength": 1 },
+    "username": { "type": "string", "minLength": 1 }
+  }
+}
