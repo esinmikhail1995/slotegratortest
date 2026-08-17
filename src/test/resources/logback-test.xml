@@ -1,0 +1,14 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %-40.40logger{40} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Feign logs request/response at DEBUG; the level of detail is set by api.log.level. -->
+    <logger name="com.slotegrator.qa.http" level="DEBUG"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
