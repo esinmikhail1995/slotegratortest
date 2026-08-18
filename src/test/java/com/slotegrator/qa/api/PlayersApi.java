@@ -8,6 +8,7 @@ import com.slotegrator.qa.dto.PlayerResponseDto;
 import com.slotegrator.qa.http.ApiResponse;
 import com.slotegrator.qa.http.FeignClients;
 import com.slotegrator.qa.http.ResponseMapper;
+import com.slotegrator.qa.report.Steps;
 
 import java.util.List;
 
@@ -40,18 +41,22 @@ public final class PlayersApi {
     }
 
     public ApiResponse<PlayerResponseDto> create(PlayerRequestDto player) {
-        return ResponseMapper.map(client.create(player), PLAYER);
+        return Steps.of("Create player '" + player.username() + "'",
+                () -> ResponseMapper.map(client.create(player), PLAYER));
     }
 
     public ApiResponse<PlayerResponseDto> getOne(String email) {
-        return ResponseMapper.map(client.getOne(new PlayerRequestOneDto(email)), PLAYER);
+        return Steps.of("Get player by email '" + email + "'",
+                () -> ResponseMapper.map(client.getOne(new PlayerRequestOneDto(email)), PLAYER));
     }
 
     public ApiResponse<List<PlayerResponseDto>> getAll() {
-        return ResponseMapper.map(client.getAll(), PLAYER_LIST);
+        return Steps.of("Get all players",
+                () -> ResponseMapper.map(client.getAll(), PLAYER_LIST));
     }
 
     public ApiResponse<PlayerResponseDto> deleteOne(String id) {
-        return ResponseMapper.map(client.deleteOne(id), PLAYER);
+        return Steps.of("Delete player " + id,
+                () -> ResponseMapper.map(client.deleteOne(id), PLAYER));
     }
 }

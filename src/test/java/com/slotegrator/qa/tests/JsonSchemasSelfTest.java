@@ -2,6 +2,10 @@ package com.slotegrator.qa.tests;
 
 import com.slotegrator.qa.http.ApiResponse;
 import com.slotegrator.qa.http.JsonSchemas;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
 import java.util.Map;
@@ -17,6 +21,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * <p>Needs no environment — it runs offline.
  */
+@Epic("Test framework")
+@Feature("Contract assertions")
+@Severity(SeverityLevel.NORMAL)
 public class JsonSchemasSelfTest {
 
     private static final String VALID_PLAYER = """

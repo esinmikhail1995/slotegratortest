@@ -24,8 +24,12 @@
         <slf4j.version>2.0.16</slf4j.version>
         <logback.version>1.5.15</logback.version>
         <datafaker.version>2.4.2</datafaker.version>
+        <allure.version>2.29.1</allure.version>
+        <!-- The report generator ships on its own release train; 2.29.1 has no commandline distribution. -->
+        <allure-commandline.version>2.34.1</allure-commandline.version>
 
         <surefire.version>3.5.2</surefire.version>
+        <allure-maven.version>2.15.2</allure-maven.version>
 
         <!-- Default run: everything except the conformance tests. Overridden by the 'contract' profile. -->
         <test.groups/>
@@ -34,6 +38,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-bom</artifactId>
+                <version>${allure.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
@@ -107,6 +118,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Reporting -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -136,8 +154,34 @@
                     <excludedGroups>${test.excludedGroups}</excludedGroups>
                     <systemPropertyVariables>
                         <api.base.url>${api.base.url}</api.base.url>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
+                    <!-- No AspectJ javaagent on purpose: Allure's @Step/@Attachment need load-time weaving,
+                         which AspectJ (up to 1.9.24) cannot do on JDK 24+. Steps and attachments are raised
+                         through the programmatic Allure API instead, which works on every JDK. -->
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure-maven.version}</version>
+                <configuration>
+                    <reportVersion>${allure-commandline.version}</reportVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- Bound to a phase rather than left to `mvn allure:report`: the `allure` plugin
+                             prefix only resolves if io.qameta.allure is in the user's settings.xml
+                             pluginGroups, which is not something the project can guarantee.
+                             `mvn verify` therefore runs the tests and builds the report. -->
+                        <id>allure-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

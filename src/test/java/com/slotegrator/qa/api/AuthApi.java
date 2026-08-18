@@ -8,6 +8,7 @@ import com.slotegrator.qa.dto.LoginResponseDto;
 import com.slotegrator.qa.http.ApiResponse;
 import com.slotegrator.qa.http.FeignClients;
 import com.slotegrator.qa.http.ResponseMapper;
+import com.slotegrator.qa.report.Steps;
 
 /** Typed facade over {@link AuthFeignClient}. */
 public final class AuthApi {
@@ -21,11 +22,11 @@ public final class AuthApi {
     private final AuthFeignClient client = FeignClients.create(AuthFeignClient.class);
 
     public ApiResponse<LoginResponseDto> login(CredentialsDto credentials) {
-        return ResponseMapper.map(
+        return Steps.of("Log in as '" + credentials.email() + "'", () -> ResponseMapper.map(
                 FeignClients.basicAuthHeader()
                         .map(header -> client.login(header, credentials))
                         .orElseGet(() -> client.login(credentials)),
-                LOGIN);
+                LOGIN));
     }
 
     /**
@@ -33,7 +34,8 @@ public final class AuthApi {
      * whether the BasicAuth layer the contract declares is actually enforced.
      */
     public ApiResponse<LoginResponseDto> loginWithoutBasicAuth(CredentialsDto credentials) {
-        return ResponseMapper.map(client.login(credentials), LOGIN);
+        return Steps.of("Log in as '" + credentials.email() + "' with no Authorization: Basic header",
+                () -> ResponseMapper.map(client.login(credentials), LOGIN));
     }
 
     /** Login with the tester credentials from the configuration. */

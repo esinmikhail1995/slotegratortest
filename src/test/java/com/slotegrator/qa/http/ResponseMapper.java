@@ -27,6 +27,7 @@ public final class ResponseMapper {
     public static <T> ApiResponse<T> map(Response response, TypeReference<T> type) {
         try (Response open = response) {
             String rawBody = readBody(open);
+            AllureAttachments.attach(open, rawBody);
             T body = null;
             String parseError = null;
             if (rawBody != null && !rawBody.isBlank()) {
@@ -45,7 +46,9 @@ public final class ResponseMapper {
     /** For endpoints whose payload is irrelevant to the assertion. */
     public static ApiResponse<Void> mapWithoutBody(Response response) {
         try (Response open = response) {
-            return ApiResponse.of(open.status(), open.reason(), open.headers(), readBody(open), null, null);
+            String rawBody = readBody(open);
+            AllureAttachments.attach(open, rawBody);
+            return ApiResponse.of(open.status(), open.reason(), open.headers(), rawBody, null, null);
         }
     }
 

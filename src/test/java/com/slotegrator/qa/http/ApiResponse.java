@@ -61,7 +61,9 @@ public record ApiResponse<T>(
         if (rawBody == null) {
             return "<none>";
         }
-        String flat = rawBody.replaceAll("\\s+", " ").trim();
+        // Masked because assertion messages end up in surefire reports and CI logs; field names survive, so
+        // a finding like "the API echoed password_change back" is still legible.
+        String flat = Sensitive.mask(rawBody).replaceAll("\\s+", " ").trim();
         return flat.length() > 2000 ? flat.substring(0, 2000) + "…" : flat;
     }
 

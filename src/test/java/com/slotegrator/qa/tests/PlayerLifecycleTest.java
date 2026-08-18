@@ -7,6 +7,11 @@ import com.slotegrator.qa.dto.PlayerRequestDto;
 import com.slotegrator.qa.dto.PlayerResponseDto;
 import com.slotegrator.qa.http.ApiResponse;
 import com.slotegrator.qa.http.JsonSchemas;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -28,6 +33,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * previous one — and a broken step leaves its dependents reported as skipped instead of failing them all
  * with the same cascading symptom.
  */
+@Epic("Players API")
+@Feature("Player lifecycle")
+@Story("Register 12 players, read them back, then remove them")
+@Severity(SeverityLevel.CRITICAL)
 public class PlayerLifecycleTest extends BaseApiTest {
 
     /** Requested payload keyed by the id the API assigned to it. */

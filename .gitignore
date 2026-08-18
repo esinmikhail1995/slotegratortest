@@ -2,3 +2,7 @@ target/
 .idea/
 *.iml
 .DS_Store
+
+# Allure
+.allure/
+allure-results/

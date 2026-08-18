@@ -8,6 +8,11 @@ import com.slotegrator.qa.dto.PlayerRequestDto;
 import com.slotegrator.qa.dto.PlayerResponseDto;
 import com.slotegrator.qa.http.ApiResponse;
 import com.slotegrator.qa.http.JsonSchemas;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
@@ -28,6 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * <p>When a deviation is fixed, the corresponding test starts passing and can be folded into the main suite.
  * Each finding is written up in {@code docs/bugs/}.
  */
+@Epic("Players API")
+@Feature("Conformance with the OpenAPI document")
+@Severity(SeverityLevel.CRITICAL)
 public class ContractConformanceTest extends BaseApiTest {
 
     private static final String CONTRACT = "contract";
@@ -42,6 +50,7 @@ public class ContractConformanceTest extends BaseApiTest {
     }
 
     @Test(groups = CONTRACT, description = "BUG-002: login answers 200 with a TokenDTO")
+    @Issue("BUG-002")
     public void loginMatchesDocumentedContract() {
         ApiResponse<LoginResponseDto> response = authApi.loginAsTester();
 
@@ -50,6 +59,7 @@ public class ContractConformanceTest extends BaseApiTest {
     }
 
     @Test(groups = CONTRACT, description = "BUG-006: login enforces the BasicAuth layer it declares")
+    @Issue("BUG-006")
     public void loginRequiresBasicAuth() {
         ApiResponse<LoginResponseDto> response = authApi.loginWithoutBasicAuth(
                 new CredentialsDto(TestConfig.testerEmail(), TestConfig.testerPassword()));
@@ -61,6 +71,7 @@ public class ContractConformanceTest extends BaseApiTest {
 
     @Test(groups = CONTRACT,
             description = "BUG-001/003/004: create answers with a PlayerResponseDTO, no password echoed back")
+    @Issue("BUG-001")
     public void createMatchesDocumentedContract() {
         ApiResponse<PlayerResponseDto> response = create();
 
@@ -71,6 +82,7 @@ public class ContractConformanceTest extends BaseApiTest {
     }
 
     @Test(groups = CONTRACT, description = "BUG-003: getOne answers with a PlayerResponseDTO, integer id")
+    @Issue("BUG-003")
     public void getOneMatchesDocumentedContract() {
         PlayerRequestDto request = PlayerFactory.player();
         rememberId(players().create(request));
@@ -81,6 +93,7 @@ public class ContractConformanceTest extends BaseApiTest {
     }
 
     @Test(groups = CONTRACT, description = "BUG-007: getAll answers with a single PlayerResponseDTO object")
+    @Issue("BUG-007")
     public void getAllMatchesDocumentedContract() {
         ApiResponse<List<PlayerResponseDto>> response = players().getAll();
 
@@ -91,6 +104,7 @@ public class ContractConformanceTest extends BaseApiTest {
     }
 
     @Test(groups = CONTRACT, description = "BUG-005: deleting an unknown id is not reported as success")
+    @Issue("BUG-005")
     public void deletingUnknownIdIsRejected() {
         // The service answers 200 with an empty body for an id that does not exist, so a client cannot tell
         // a real deletion from a no-op.

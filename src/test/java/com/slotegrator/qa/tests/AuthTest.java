@@ -6,11 +6,18 @@ import com.slotegrator.qa.dto.CredentialsDto;
 import com.slotegrator.qa.dto.LoginResponseDto;
 import com.slotegrator.qa.http.ApiResponse;
 import com.slotegrator.qa.http.JsonSchemas;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /** Step 1: obtain a tester token. {@code POST /api/tester/login}. */
+@Epic("Players API")
+@Feature("Authentication")
+@Severity(SeverityLevel.BLOCKER)
 public class AuthTest {
 
     private final AuthApi authApi = new AuthApi();
