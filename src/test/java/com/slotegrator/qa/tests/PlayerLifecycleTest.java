@@ -93,7 +93,7 @@ public class PlayerLifecycleTest extends BaseApiTest {
     }
 
     @Test(description = "3. POST /getOne returns the created player's profile",
-            dependsOnMethods = "createsTwelvePlayers")
+            dependsOnMethods = "createsTwelvePlayers", priority = 1)
     public void returnsProfileOfCreatedPlayer() {
         PlayerRequestDto expected = firstCreatedPlayer();
 
@@ -113,7 +113,7 @@ public class PlayerLifecycleTest extends BaseApiTest {
     }
 
     @Test(description = "3a. POST /getOne rejects an unknown email",
-            dependsOnMethods = "createsTwelvePlayers")
+            dependsOnMethods = "createsTwelvePlayers", priority = 2)
     public void getOneRejectsUnknownEmail() {
         ApiResponse<PlayerResponseDto> response = players.getOne("no-such-player@qa-automation.test");
 
@@ -121,7 +121,7 @@ public class PlayerLifecycleTest extends BaseApiTest {
     }
 
     @Test(description = "4. GET /getAll lists every created player and sorts them by name",
-            dependsOnMethods = "createsTwelvePlayers")
+            dependsOnMethods = "createsTwelvePlayers", priority = 3)
     public void listsAllPlayersSortedByName() {
         ApiResponse<List<PlayerResponseDto>> response = players.getAll();
 
